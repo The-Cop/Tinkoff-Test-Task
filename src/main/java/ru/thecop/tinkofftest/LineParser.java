@@ -13,12 +13,13 @@ import java.util.regex.Pattern;
 @Slf4j
 public final class LineParser {
 
-    private LineParser() {
-    }
-
     private static final Pattern PATTERN = Pattern.compile("([\\S]+).*\\[([^)]+)\\] ([\\S]+).*\\(([^:]+):([^\\)]+)");
+
     public static final DateTimeFormatter DATE_TIME_FORMATTER =
             DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss','SSS");
+
+    private LineParser() {
+    }
 
     public static Entry parseLine(String line) {
         Matcher matcher = PATTERN.matcher(line);

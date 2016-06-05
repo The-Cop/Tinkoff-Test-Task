@@ -19,10 +19,21 @@ public class LogProcessor {
         statsManager = new StatsManager();
     }
 
+    //TODO remove this method
     public void process(String filePath) {
         Path path = Paths.get(filePath);
         try (Stream<String> stream = Files.lines(path)) {
             stream.forEach(this::processLine);
+        } catch (IOException e) {
+            log.error("Failed to open file {}", e.getMessage());
+        }
+    }
+
+    //TODO rename to process()
+    public void processPar(String filePath) {
+        Path path = Paths.get(filePath);
+        try (Stream<String> stream = Files.lines(path)) {
+            stream.parallel().forEach(this::processLine);
         } catch (IOException e) {
             log.error("Failed to open file {}", e.getMessage());
         }
@@ -34,7 +45,7 @@ public class LogProcessor {
             //malformed line
             return;
         }
-        statsManager.addEntry(entry);
+        statsManager.addToStats(entry);
     }
 
     public StatsManager getStatsManager() {
@@ -44,12 +55,22 @@ public class LogProcessor {
     public static void main(String[] args) {
         if (args.length == 0) {
             System.err.println("No file path specified.");
-            LogProcessor p = new LogProcessor();
-            p.getStatsManager().printStatsToConsole();
             return;
         }
+        //TODO remove timings
+        long start = System.currentTimeMillis();
         LogProcessor p = new LogProcessor();
+        p.processPar(args[0]);
+        p.getStatsManager().printStatsToConsole();
+        long end = System.currentTimeMillis();
+        System.err.println("Parallel " + (double) (end - start) / 1000);
+
+        //TODO remove this
+        start = System.currentTimeMillis();
+        p = new LogProcessor();
         p.process(args[0]);
         p.getStatsManager().printStatsToConsole();
+        end = System.currentTimeMillis();
+        System.err.println("Single " + (double) (end - start) / 1000);
     }
 }

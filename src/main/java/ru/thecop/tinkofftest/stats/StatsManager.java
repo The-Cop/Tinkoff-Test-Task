@@ -6,37 +6,33 @@ import ru.thecop.tinkofftest.entry.EntryType;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class StatsManager {
 
-    private final Map<EntryMapKey, LocalDateTime> currentEntriesMap = new HashMap<>();
-    private final Map<StatsMapKey, MethodStats> statsMap = new HashMap<>();
+    private final Map<EntryMapKey, LocalDateTime> currentEntriesMap = new ConcurrentHashMap<>();
+    private final Map<StatsMapKey, MethodStats> statsMap = new ConcurrentHashMap<>();
 
     //TODO rename
-    public void addEntry(Entry entry) {
-        EntryMapKey entryKey = new EntryMapKey(entry);
-        //in case log has exit-lines without entry-lines
-        if (entry.getType() == EntryType.ENTRY) {
-            currentEntriesMap.put(entryKey, entry.getDateTime());
+    public void addToStats(Entry entry) {
+        EntryMapKey pairKey = EntryMapKey.ofPair(entry);
+        LocalDateTime pairDateTime = currentEntriesMap.remove(pairKey);
+        if (pairDateTime == null) {
+            //no pair entry - add current
+            currentEntriesMap.put(EntryMapKey.of(entry), entry.getDateTime());
             return;
         }
-        LocalDateTime startDateTime = currentEntriesMap.remove(entryKey);
-        if (startDateTime == null) {
-            //No start entry - ignore
-            return;
-        }
-        Duration duration = Duration.between(startDateTime, entry.getDateTime());
+        Duration duration = Duration.between(pairDateTime, entry.getDateTime());
         StatsMapKey statsMapKey = new StatsMapKey(entry);
         MethodStats methodStats = statsMap.get(statsMapKey);
         if (methodStats == null) {
             methodStats = new MethodStats(entry.getLoggedClass(), entry.getMethodName());
-            statsMap.put(statsMapKey, methodStats);
+            statsMap.putIfAbsent(statsMapKey, methodStats);
         }
-        methodStats.addCall(duration.toMillis(), entry.getCallId());
+        methodStats.addCall(Math.abs(duration.toMillis()), entry.getCallId());
     }
 
     public void printStatsToConsole() {
@@ -68,11 +64,24 @@ public class StatsManager {
         private final String loggedClass;
         private final String methodName;
         private final long callId;
+        private final EntryType type;
 
-        EntryMapKey(Entry entry) {
+        private EntryMapKey(Entry entry, boolean pair) {
             loggedClass = entry.getLoggedClass();
             methodName = entry.getMethodName();
             callId = entry.getCallId();
+            type = pair ? entry.getType().reverse() : entry.getType();
+        }
+
+        /**
+         * @return An exit-typed-key if entry is of type "entry" and vice versa.
+         */
+        public static EntryMapKey ofPair(Entry entry) {
+            return new EntryMapKey(entry, true);
+        }
+
+        public static EntryMapKey of(Entry entry) {
+            return new EntryMapKey(entry, false);
         }
     }
 }
