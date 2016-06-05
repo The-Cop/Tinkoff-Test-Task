@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 public class LogProcessor {
 
-    private StatsManager statsManager;
+    private final StatsManager statsManager;
 
     public LogProcessor() {
         statsManager = new StatsManager();
@@ -23,7 +23,6 @@ public class LogProcessor {
             stream.forEach(this::processLine);
         } catch (IOException e) {
             System.err.println("Can not open file: " + e.getMessage());
-            return;
         }
     }
 
@@ -40,11 +39,11 @@ public class LogProcessor {
         return statsManager;
     }
 
-    //TODO checkstyle
     public static void main(String[] args) {
         if (args.length == 0) {
             System.err.println("No file path specified.");
             LogProcessor p = new LogProcessor();
+            //TODO delete test file
             p.process("testlog.log");
             p.getStatsManager().printStatsToConsole();
             return;
