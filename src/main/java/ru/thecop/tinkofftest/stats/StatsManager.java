@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 public class StatsManager {
 
     private final Map<EntryMapKey, LocalDateTime> currentEntriesMap = new HashMap<>();
-
     private final Map<StatsMapKey, MethodStats> statsMap = new HashMap<>();
 
     //TODO rename

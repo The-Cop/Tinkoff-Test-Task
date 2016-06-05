@@ -1,5 +1,6 @@
 package ru.thecop.tinkofftest;
 
+import lombok.extern.slf4j.Slf4j;
 import ru.thecop.tinkofftest.entry.Entry;
 import ru.thecop.tinkofftest.stats.StatsManager;
 
@@ -9,6 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
+@Slf4j
 public class LogProcessor {
 
     private final StatsManager statsManager;
@@ -22,7 +24,7 @@ public class LogProcessor {
         try (Stream<String> stream = Files.lines(path)) {
             stream.forEach(this::processLine);
         } catch (IOException e) {
-            System.err.println("Can not open file: " + e.getMessage());
+            log.error("Failed to open file {}", e.getMessage());
         }
     }
 
@@ -43,8 +45,6 @@ public class LogProcessor {
         if (args.length == 0) {
             System.err.println("No file path specified.");
             LogProcessor p = new LogProcessor();
-            //TODO delete test file
-            p.process("testlog.log");
             p.getStatsManager().printStatsToConsole();
             return;
         }

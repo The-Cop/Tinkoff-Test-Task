@@ -21,13 +21,13 @@ public final class MethodStats {
     }
 
     public MethodStats(MethodStats other) {
-       loggedClass = other.loggedClass;
-       methodName = other.methodName;
-       minTime = other.minTime;
-       maxTime = other.maxTime;
-       maxTimeCallId = other.maxTimeCallId;
-       callCount = other.callCount;
-       totalTimeMillis = other.totalTimeMillis;
+        loggedClass = other.loggedClass;
+        methodName = other.methodName;
+        minTime = other.minTime;
+        maxTime = other.maxTime;
+        maxTimeCallId = other.maxTimeCallId;
+        callCount = other.callCount;
+        totalTimeMillis = other.totalTimeMillis;
     }
 
     public void addCall(long durationMillis, long callId) {
@@ -43,6 +43,9 @@ public final class MethodStats {
     }
 
     private long avg() {
+        if (callCount == 0) {
+            return 0;
+        }
         return totalTimeMillis / callCount;
     }
 

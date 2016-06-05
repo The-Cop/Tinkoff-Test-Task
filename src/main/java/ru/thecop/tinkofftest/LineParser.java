@@ -1,5 +1,6 @@
 package ru.thecop.tinkofftest;
 
+import lombok.extern.slf4j.Slf4j;
 import ru.thecop.tinkofftest.entry.Entry;
 import ru.thecop.tinkofftest.entry.EntryType;
 
@@ -9,6 +10,7 @@ import java.time.format.DateTimeParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Slf4j
 public final class LineParser {
 
     private LineParser() {
@@ -33,9 +35,9 @@ public final class LineParser {
                 return new Entry(EntryType.valueOf(type.toUpperCase()), dateTime,
                         loggedClass, methodName, Long.valueOf(callId));
             } catch (IllegalArgumentException | DateTimeParseException e) {
-                //TODO log exceptions
                 //failed to parse line: not an entry and not an exit, or callId not a number, or wrong date
                 //skip line
+                log.warn("Failed to parse line '{}', exception = {}, message = {}", line, e.getClass(), e.getMessage());
             }
         }
         return null;
