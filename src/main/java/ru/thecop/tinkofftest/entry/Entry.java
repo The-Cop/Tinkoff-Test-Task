@@ -1,4 +1,4 @@
-package ru.thecop.entry;
+package ru.thecop.tinkofftest.entry;
 
 import java.time.LocalDateTime;
 
@@ -37,17 +37,5 @@ public final class Entry {
 
     public long getCallId() {
         return callId;
-    }
-
-
-    @Override
-    public String toString() {
-        return "Entry{" +
-                "type=" + type +
-                ", dateTime=" + dateTime +
-                ", loggedClass='" + loggedClass + '\'' +
-                ", methodName='" + methodName + '\'' +
-                ", callId=" + callId +
-                '}';
     }
 }

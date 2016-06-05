@@ -1,4 +1,4 @@
-package ru.thecop.entry;
+package ru.thecop.tinkofftest.entry;
 
 public enum EntryType {
 

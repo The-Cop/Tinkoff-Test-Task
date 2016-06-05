@@ -1,6 +1,6 @@
-package ru.thecop;
+package ru.thecop.tinkofftest;
 
-import ru.thecop.entry.Entry;
+import ru.thecop.tinkofftest.entry.Entry;
 
 import java.io.IOException;
 import java.nio.file.Files;

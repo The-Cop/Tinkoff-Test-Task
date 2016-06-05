@@ -2,13 +2,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ru.thecop</groupId>
+    <groupId>ru.thecop.tinkofftest</groupId>
     <artifactId>tinkofftest</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-
     <name>tinkofftest</name>
-    <url>http://maven.apache.org</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -18,7 +16,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>3.8.1</version>
+            <version>4.12</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -39,9 +37,11 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>ru.thecop.LogProcessor</mainClass>
+                            <mainClass>ru.thecop.tinkofftest.LogProcessor</mainClass>
                         </manifest>
                     </archive>
+                    <finalName>tinkofftest-runnable</finalName>
+                    <appendAssemblyId>false</appendAssemblyId>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>

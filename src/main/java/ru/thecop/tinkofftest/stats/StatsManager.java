@@ -1,11 +1,13 @@
-package ru.thecop.stats;
+package ru.thecop.tinkofftest.stats;
 
-import ru.thecop.entry.Entry;
-import ru.thecop.entry.EntryType;
+import ru.thecop.tinkofftest.entry.Entry;
+import ru.thecop.tinkofftest.entry.EntryType;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class StatsManager {
     private HashMap<EntryMapKey, LocalDateTime> currentEntriesMap = new HashMap<>();
@@ -39,6 +41,12 @@ public class StatsManager {
         statsMap.values().stream().forEach(ms -> System.out.println(ms.print()));
     }
 
+    /**
+     * @return list of copies of methods stats
+     */
+    public List<MethodStats> getMethodStats(){
+        return statsMap.values().stream().map(MethodStats::new).collect(Collectors.toList());
+    }
 
     //TODO Lombok
     private static final class StatsMapKey {
@@ -46,6 +54,7 @@ public class StatsManager {
         private String methodName;
 
         StatsMapKey(Entry entry) {
+
             this.loggedClass = entry.getLoggedClass();
             this.methodName = entry.getMethodName();
         }

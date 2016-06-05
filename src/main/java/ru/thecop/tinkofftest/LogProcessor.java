@@ -1,7 +1,7 @@
-package ru.thecop;
+package ru.thecop.tinkofftest;
 
-import ru.thecop.entry.Entry;
-import ru.thecop.stats.StatsManager;
+import ru.thecop.tinkofftest.entry.Entry;
+import ru.thecop.tinkofftest.stats.StatsManager;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,7 +24,6 @@ public class LogProcessor {
             System.err.println("Can not open file: " + e.getMessage());
             return;
         }
-        statsManager.printStatsToConsole();
     }
 
     private void processLine(String line) {
@@ -36,12 +35,17 @@ public class LogProcessor {
         statsManager.addEntry(entry);
     }
 
+    public StatsManager getStatsManager() {
+        return statsManager;
+    }
+
     //TODO checkstyle
     public static void main(String[] args) {
         if(args.length==0){
             System.err.println("No file path specified.");
             LogProcessor p = new LogProcessor();
             p.process("testlog.log");
+            p.getStatsManager().printStatsToConsole();
             return;
         }
         LogProcessor p = new LogProcessor();
