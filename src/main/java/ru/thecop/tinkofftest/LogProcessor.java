@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.util.stream.Stream;
 
 public class LogProcessor {
+
     private StatsManager statsManager;
 
     public LogProcessor() {
@@ -41,7 +42,7 @@ public class LogProcessor {
 
     //TODO checkstyle
     public static void main(String[] args) {
-        if(args.length==0){
+        if (args.length == 0) {
             System.err.println("No file path specified.");
             LogProcessor p = new LogProcessor();
             p.process("testlog.log");

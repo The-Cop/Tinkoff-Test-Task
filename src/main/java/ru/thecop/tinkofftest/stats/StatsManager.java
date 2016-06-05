@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class StatsManager {
+
     private HashMap<EntryMapKey, LocalDateTime> currentEntriesMap = new HashMap<>();
 
     private HashMap<StatsMapKey, MethodStats> statsMap = new HashMap<>();
@@ -44,12 +45,13 @@ public class StatsManager {
     /**
      * @return list of copies of methods stats
      */
-    public List<MethodStats> getMethodStats(){
+    public List<MethodStats> getMethodStats() {
         return statsMap.values().stream().map(MethodStats::new).collect(Collectors.toList());
     }
 
     //TODO Lombok
     private static final class StatsMapKey {
+
         private String loggedClass;
         private String methodName;
 
@@ -61,14 +63,19 @@ public class StatsManager {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
 
             StatsMapKey that = (StatsMapKey) o;
 
-            if (!loggedClass.equals(that.loggedClass)) return false;
+            if (!loggedClass.equals(that.loggedClass)) {
+                return false;
+            }
             return methodName.equals(that.methodName);
-
         }
 
         @Override
@@ -80,6 +87,7 @@ public class StatsManager {
     }
 
     private static final class EntryMapKey {
+
         private String loggedClass;
         private String methodName;
         private long callId;
@@ -92,16 +100,22 @@ public class StatsManager {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
 
             EntryMapKey entryMapKey = (EntryMapKey) o;
 
-            if (callId != entryMapKey.callId) return false;
-            if (loggedClass != null ? !loggedClass.equals(entryMapKey.loggedClass) : entryMapKey.loggedClass != null)
+            if (callId != entryMapKey.callId) {
                 return false;
+            }
+            if (loggedClass != null ? !loggedClass.equals(entryMapKey.loggedClass) : entryMapKey.loggedClass != null) {
+                return false;
+            }
             return methodName != null ? methodName.equals(entryMapKey.methodName) : entryMapKey.methodName == null;
-
         }
 
         @Override

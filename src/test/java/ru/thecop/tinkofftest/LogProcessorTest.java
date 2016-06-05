@@ -29,9 +29,12 @@ public class LogProcessorTest {
 
         List<String> actualPrinted = actualStats.stream().map(MethodStats::print).collect(Collectors.toList());
         List<String> expectedPrinted = new ArrayList<>();
-        expectedPrinted.add("OperationsImpl:processClient min 10000, max 10000, avg 10000, max id 17893, count 1, totaltime 10000");
-        expectedPrinted.add("OperationsImpl:getData min 20000, max 20000, avg 20000, max id 17894, count 1, totaltime 20000");
-        expectedPrinted.add("OperationsImpl:getActions min 30000, max 120000, avg 75000, max id 17896, count 2, totaltime 150000");
+        expectedPrinted.add(
+                "OperationsImpl:processClient min 10000, max 10000, avg 10000, max id 17893, count 1, totaltime 10000");
+        expectedPrinted.add(
+                "OperationsImpl:getData min 20000, max 20000, avg 20000, max id 17894, count 1, totaltime 20000");
+        expectedPrinted.add(
+                "OperationsImpl:getActions min 30000, max 120000, avg 75000, max id 17896, count 2, totaltime 150000");
 
         assertTrue(actualPrinted.containsAll(expectedPrinted));
         assertTrue(expectedPrinted.containsAll(actualPrinted));

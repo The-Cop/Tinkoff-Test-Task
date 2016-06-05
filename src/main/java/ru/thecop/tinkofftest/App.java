@@ -12,14 +12,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public class App {
+public final class App {
+
+    private App() {
+    }
+
     public static void main(String[] args) {
         logMem();
         System.out.println("Hello World!");
 //        readStream();
 //        readInMem();
         parseLine("2015-10-26T16:09:56,885 TRACE [OperationsImpl] entry with (processClient:17899)");
-
     }
 
     private static void readStream() {
@@ -45,16 +48,16 @@ public class App {
         }
     }
 
-    private static Entry parseLine(String line){
+    private static Entry parseLine(String line) {
         Pattern pattern = Pattern.compile("\\(([^)]+)\\)");
         Matcher matcher = pattern.matcher(line);
-        if(matcher.find()) {
+        if (matcher.find()) {
             System.err.println(matcher.group(1));
         }
         return null;
     }
 
-    private static long i = 0;
+    private static long i;
 
     private static void inc() {
         i++;

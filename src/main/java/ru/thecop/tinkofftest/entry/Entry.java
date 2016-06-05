@@ -3,8 +3,8 @@ package ru.thecop.tinkofftest.entry;
 import java.time.LocalDateTime;
 
 public final class Entry {
-    //TODO lombok?
 
+    //TODO lombok?
     private EntryType type;
     private LocalDateTime dateTime;
     private String loggedClass;

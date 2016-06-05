@@ -1,6 +1,7 @@
 package ru.thecop.tinkofftest.stats;
 
 public final class MethodStats {
+
     private String loggedClass;
     private String methodName;
     private long minTime;
@@ -44,24 +45,39 @@ public final class MethodStats {
 
     public String print() {
         return String.format("%s:%s min %d, max %d, avg %d, max id %d, count %d, totaltime %d",
-                loggedClass, methodName, minTime, maxTime, avg(), maxTimeCallId, callCount,totalTimeMillis);
+                loggedClass, methodName, minTime, maxTime, avg(), maxTimeCallId, callCount, totalTimeMillis);
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         MethodStats that = (MethodStats) o;
 
-        if (minTime != that.minTime) return false;
-        if (maxTime != that.maxTime) return false;
-        if (maxTimeCallId != that.maxTimeCallId) return false;
-        if (callCount != that.callCount) return false;
-        if (totalTimeMillis != that.totalTimeMillis) return false;
-        if (loggedClass != null ? !loggedClass.equals(that.loggedClass) : that.loggedClass != null) return false;
+        if (minTime != that.minTime) {
+            return false;
+        }
+        if (maxTime != that.maxTime) {
+            return false;
+        }
+        if (maxTimeCallId != that.maxTimeCallId) {
+            return false;
+        }
+        if (callCount != that.callCount) {
+            return false;
+        }
+        if (totalTimeMillis != that.totalTimeMillis) {
+            return false;
+        }
+        if (loggedClass != null ? !loggedClass.equals(that.loggedClass) : that.loggedClass != null) {
+            return false;
+        }
         return methodName != null ? methodName.equals(that.methodName) : that.methodName == null;
-
     }
 
     @Override
