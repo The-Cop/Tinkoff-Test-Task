@@ -50,5 +50,6 @@ public class LogProcessor {
         }
         LogProcessor p = new LogProcessor();
         p.process(args[0]);
+        p.getStatsManager().printStatsToConsole();
     }
 }
