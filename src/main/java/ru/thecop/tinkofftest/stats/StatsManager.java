@@ -11,12 +11,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-public class StatsManager {
+public final class StatsManager {
 
     private final Map<EntryMapKey, LocalDateTime> currentEntriesMap = new ConcurrentHashMap<>();
     private final Map<StatsMapKey, MethodStats> statsMap = new ConcurrentHashMap<>();
 
-    //TODO rename
     public void addToStats(Entry entry) {
         EntryMapKey pairKey = EntryMapKey.ofPair(entry);
         LocalDateTime pairDateTime = currentEntriesMap.remove(pairKey);

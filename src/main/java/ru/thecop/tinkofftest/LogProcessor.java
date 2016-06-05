@@ -19,20 +19,8 @@ public class LogProcessor {
         statsManager = new StatsManager();
     }
 
-    //TODO remove this method
-    public void process(String filePath) {
-        Path path = Paths.get(filePath);
-        try (Stream<String> stream = Files.lines(path)) {
-            stream.forEach(this::processLine);
-        } catch (IOException e) {
-            log.error("Failed to open file {}", e.getMessage());
-        }
-    }
-
-    //TODO rename to process()
-    public void processPar(String filePath) {
-        Path path = Paths.get(filePath);
-        try (Stream<String> stream = Files.lines(path)) {
+    public void process(Path filePath) {
+        try (Stream<String> stream = Files.lines(filePath)) {
             stream.parallel().forEach(this::processLine);
         } catch (IOException e) {
             log.error("Failed to open file {}", e.getMessage());
@@ -42,7 +30,7 @@ public class LogProcessor {
     private void processLine(String line) {
         Entry entry = LineParser.parseLine(line);
         if (entry == null) {
-            //malformed line
+            //malformed line, ignore
             return;
         }
         statsManager.addToStats(entry);
@@ -57,20 +45,13 @@ public class LogProcessor {
             System.err.println("No file path specified.");
             return;
         }
-        //TODO remove timings
-        long start = System.currentTimeMillis();
+        Path filePath = Paths.get(args[0]);
+        if (!Files.exists(filePath)) {
+            System.err.println("Can not find file " + filePath);
+            return;
+        }
         LogProcessor p = new LogProcessor();
-        p.processPar(args[0]);
+        p.process(filePath);
         p.getStatsManager().printStatsToConsole();
-        long end = System.currentTimeMillis();
-        System.err.println("Parallel " + (double) (end - start) / 1000);
-
-        //TODO remove this
-        start = System.currentTimeMillis();
-        p = new LogProcessor();
-        p.process(args[0]);
-        p.getStatsManager().printStatsToConsole();
-        end = System.currentTimeMillis();
-        System.err.println("Single " + (double) (end - start) / 1000);
     }
 }

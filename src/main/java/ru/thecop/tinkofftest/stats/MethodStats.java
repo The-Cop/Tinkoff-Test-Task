@@ -77,15 +77,14 @@ public final class MethodStats {
         return totalTimeMillis.get() / callCount.get();
     }
 
-    //TODO delete totaltime
     public String print() {
-        return String.format("%s:%s min %d, max %d, avg %d, max id %d, count %d, totaltime %d",
+        return String.format("%s:%s min %d, max %d, avg %d, max id %d, count %d",
                 loggedClass, methodName, minTime.get(), maximumInfoRef.get().getMaxTime(), avg(),
                 maximumInfoRef.get().getMaxTimeCallId(), callCount.get(), totalTimeMillis.get());
     }
 
     @Value
-    private static class MaximumInfo {
+    private static final class MaximumInfo {
 
         private final long maxTime;
         private final long maxTimeCallId;

@@ -7,9 +7,9 @@ import java.time.LocalDateTime;
 @Value
 public final class Entry {
 
-    private EntryType type;
-    private LocalDateTime dateTime;
-    private String loggedClass;
-    private String methodName;
-    private long callId;
+    private final EntryType type;
+    private final LocalDateTime dateTime;
+    private final String loggedClass;
+    private final String methodName;
+    private final long callId;
 }
