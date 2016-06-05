@@ -26,10 +26,14 @@ public final class StatsManager {
         }
         Duration duration = Duration.between(pairDateTime, entry.getDateTime());
         StatsMapKey statsMapKey = new StatsMapKey(entry);
+
         MethodStats methodStats = statsMap.get(statsMapKey);
         if (methodStats == null) {
-            methodStats = new MethodStats(entry.getLoggedClass(), entry.getMethodName());
-            statsMap.putIfAbsent(statsMapKey, methodStats);
+            MethodStats newMethodStats = new MethodStats(entry.getLoggedClass(), entry.getMethodName());
+            methodStats = statsMap.putIfAbsent(statsMapKey, newMethodStats);
+            if (methodStats == null) {
+                methodStats = newMethodStats;
+            }
         }
         methodStats.addCall(Math.abs(duration.toMillis()), entry.getCallId());
     }
