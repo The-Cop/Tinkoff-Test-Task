@@ -40,6 +40,8 @@ public class LogProcessor {
     public static void main(String[] args) {
         if(args.length==0){
             System.err.println("No file path specified.");
+            LogProcessor p = new LogProcessor();
+            p.process("testlog.log");
             return;
         }
         LogProcessor p = new LogProcessor();

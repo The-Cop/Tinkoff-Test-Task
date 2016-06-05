@@ -2,9 +2,6 @@ package ru.thecop.entry;
 
 import java.time.LocalDateTime;
 
-/**
- * Created by TheCops-PC on 01.06.2016.
- */
 public final class Entry {
     //TODO lombok?
 

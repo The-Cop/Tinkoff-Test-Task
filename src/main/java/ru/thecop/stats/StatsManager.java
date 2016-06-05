@@ -4,27 +4,29 @@ import ru.thecop.entry.Entry;
 import ru.thecop.entry.EntryType;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 
 public class StatsManager {
-    private HashMap<EntryMapKey, Entry> currentEntriesMap = new HashMap<>();
+    private HashMap<EntryMapKey, LocalDateTime> currentEntriesMap = new HashMap<>();
 
     private HashMap<StatsMapKey, MethodStats> statsMap = new HashMap<>();
 
     //TODO rename
     public void addEntry(Entry entry) {
         EntryMapKey entryKey = new EntryMapKey(entry);
+        //in case log has exit-lines without entry-lines
         if (entry.getType() == EntryType.ENTRY) {
-            currentEntriesMap.put(entryKey, entry);
+            currentEntriesMap.put(entryKey, entry.getDateTime());
             return;
         }
-        Entry startEntry = currentEntriesMap.remove(entryKey);
-        if (startEntry == null) {
+        LocalDateTime startDateTime = currentEntriesMap.remove(entryKey);
+        if (startDateTime == null) {
             //No start entry - ignore
             return;
         }
-        Duration duration = Duration.between(startEntry.getDateTime(), entry.getDateTime());
-        StatsMapKey statsMapKey = new StatsMapKey(entry.getLoggedClass(), entry.getMethodName());
+        Duration duration = Duration.between(startDateTime, entry.getDateTime());
+        StatsMapKey statsMapKey = new StatsMapKey(entry);
         MethodStats methodStats = statsMap.get(statsMapKey);
         if (methodStats == null) {
             methodStats = new MethodStats(entry.getLoggedClass(), entry.getMethodName());
@@ -38,15 +40,14 @@ public class StatsManager {
     }
 
 
-    //Lombok
+    //TODO Lombok
     private static final class StatsMapKey {
         private String loggedClass;
         private String methodName;
 
-        //TODO entry, not two strings
-        public StatsMapKey(String loggedClass, String methodName) {
-            this.loggedClass = loggedClass;
-            this.methodName = methodName;
+        StatsMapKey(Entry entry) {
+            this.loggedClass = entry.getLoggedClass();
+            this.methodName = entry.getMethodName();
         }
 
         @Override
@@ -74,7 +75,7 @@ public class StatsManager {
         private String methodName;
         private long callId;
 
-        public EntryMapKey(Entry entry) {
+        EntryMapKey(Entry entry) {
             loggedClass = entry.getLoggedClass();
             methodName = entry.getMethodName();
             callId = entry.getCallId();

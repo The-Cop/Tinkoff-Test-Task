@@ -12,9 +12,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-/**
- * Hello world!
- */
 public class App {
     public static void main(String[] args) {
         logMem();
